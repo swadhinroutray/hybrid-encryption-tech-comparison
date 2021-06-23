@@ -1,4 +1,4 @@
-const response = require('../utils/response');
+const response = require('../utils/responseHandler');
 async function hello(req, res) {
 	try {
 		return response.sendResponse(res, 'Hello');

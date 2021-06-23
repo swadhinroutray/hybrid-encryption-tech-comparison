@@ -8,7 +8,7 @@ async function register(req, res) {
 	try {
 		const salt = await bcrypt.genSalt(parseInt(process.env.SALT_FACTOR));
 		bcrypt.hash(req.body.password, salt).then(async (hash) => {
-			var pair = keypair(); //! Change keypair OPTS in order to vary key size as and when required
+			var pair = await keypair({ bits: 1024 }); //! Change keypair OPTS in order to vary key size as and when required
 
 			const newUser = new user({
 				userID: uuid(),
@@ -26,7 +26,7 @@ async function register(req, res) {
 				return sendError(res, 'An error Occured');
 			}
 			//   console.log(result);
-			return sendResponse(res, newUser);
+			return sendResponse(res, 'User Registered Successfully');
 		});
 	} catch (e) {
 		console.log(e);

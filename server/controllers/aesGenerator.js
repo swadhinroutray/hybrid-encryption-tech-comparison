@@ -1,5 +1,5 @@
 var crypto = require('crypto-js');
-const { sendResponse, sendError } = require('../utils/response');
+const { sendResponse, sendError } = require('../utils/responseHandler');
 
 async function AESencryption(hash) {
 	const cipherText = await crypto.AES.encrypt(
