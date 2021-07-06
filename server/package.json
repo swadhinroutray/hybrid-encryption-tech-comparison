@@ -4,7 +4,9 @@
   "description": "API for the comparative study on homomorphic encryption & communication between client server systems.",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon index.js"
+    "test": "nodemon index.js",
+    "start": "node index.js",
+    "prod": "pm2 start --name encryption_server"
   },
   "keywords": [
     "Node",
@@ -24,10 +26,13 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
+    "fs": "*",
     "javascript-blowfish": "^1.0.4",
     "keypair": "^1.0.3",
     "mongoose": "^5.12.14",
     "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "node-rsa": "^1.1.1",
     "path": "^0.12.7",
     "redis": "^3.1.2",
     "uuidv4": "^6.2.10"

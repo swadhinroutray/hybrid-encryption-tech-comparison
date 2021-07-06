@@ -18,6 +18,7 @@ async function register(req, res) {
 				contact: req.body.contact.trim(),
 				RSAPrivateKey: pair.private,
 				RSAPublicKey: pair.public,
+				receivedFiles: [],
 			});
 
 			var result = await newUser.save();

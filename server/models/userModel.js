@@ -31,6 +31,9 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	receivedFiles: {
+		type: Array,
+	},
 });
 
 const user = mongoose.model('user', userSchema);
