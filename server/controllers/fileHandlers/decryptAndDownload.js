@@ -6,6 +6,9 @@ const { DESdecryption } = require('../encryptors/DES');
 const fs = require('fs');
 const { AESdecryption } = require('../encryptors/AES');
 const { RC4decryption } = require('../encryptors/RC4');
+const { TripleDESdecryption } = require('../encryptors/3DES');
+const { BlowfishDecryption } = require('../encryptors/BLOWFISH');
+const { RabbitDecryption } = require('../encryptors/RABBIT');
 
 async function decryptAndDownload(req, res) {
 	try {
@@ -56,13 +59,16 @@ async function decryptAndDownload(req, res) {
 		//! Decryption depending on type
 		switch (type) {
 			case 'AES': {
+				console.time('AES_DECRYPT');
 				const decryptedBuffer = await AESdecryption(
 					decryptedEKey,
 					dataBuffer
 				);
+				console.timeEnd('AES_DECRYPT');
+
 				try {
 					await fs.writeFile(
-						'download.txt',
+						req.session.email + '_download.txt',
 						decryptedBuffer,
 						function (err) {
 							if (err) return console.log(err);
@@ -76,13 +82,17 @@ async function decryptAndDownload(req, res) {
 			}
 
 			case 'DES': {
+				console.time('DES_DECRYPT');
+
 				const decryptedBuffer = await DESdecryption(
 					decryptedEKey,
 					dataBuffer
 				);
+				console.timeEnd('DES_DECRYPT');
+
 				try {
 					await fs.writeFile(
-						'download.txt',
+						req.session.email + '_download.txt',
 						decryptedBuffer,
 						function (err) {
 							if (err) return console.log(err);
@@ -95,13 +105,17 @@ async function decryptAndDownload(req, res) {
 				break;
 			}
 			case 'RC4': {
+				console.time('RC4_DECRYPT');
+
 				const decryptedBuffer = await RC4decryption(
 					decryptedEKey,
 					dataBuffer
 				);
+				console.timeEnd('RC4_DECRYPT');
+
 				try {
 					await fs.writeFile(
-						'download.txt',
+						req.session.email + '_download.txt',
 						decryptedBuffer,
 						function (err) {
 							if (err) return console.log(err);
@@ -113,8 +127,75 @@ async function decryptAndDownload(req, res) {
 				}
 				break;
 			}
-			// case 'AES':
-			// 	break;
+			case '3DES': {
+				console.time('3DES_DECRYPT');
+
+				const decryptedBuffer = await TripleDESdecryption(
+					decryptedEKey,
+					dataBuffer
+				);
+				console.timeEnd('3DES_DECRYPT');
+
+				try {
+					await fs.writeFile(
+						req.session.email + '_download.txt',
+						decryptedBuffer,
+						function (err) {
+							if (err) return console.log(err);
+							console.log('Decrypted Data > download.txt');
+						}
+					);
+				} catch (err) {
+					console.error(err);
+				}
+				break;
+			}
+			case 'BLOWFISH': {
+				console.time('BLOWFISH_DECRYPT');
+
+				const decryptedBuffer = await BlowfishDecryption(
+					decryptedEKey,
+					dataBuffer
+				);
+				console.timeEnd('BLOWFISH_DECRYPT');
+
+				try {
+					await fs.writeFile(
+						req.session.email + '_download.txt',
+						decryptedBuffer,
+						function (err) {
+							if (err) return console.log(err);
+							console.log('Decrypted Data > download.txt');
+						}
+					);
+				} catch (err) {
+					console.error(err);
+				}
+				break;
+			}
+			case 'RABBIT': {
+				console.time('RABBIT_DECRYPT');
+
+				const decryptedBuffer = await RabbitDecryption(
+					decryptedEKey,
+					dataBuffer
+				);
+				console.timeEnd('RABBIT_DECRYPT');
+
+				try {
+					await fs.writeFile(
+						req.session.email + '_download.txt',
+						decryptedBuffer,
+						function (err) {
+							if (err) return console.log(err);
+							console.log('Decrypted Data > download.txt');
+						}
+					);
+				} catch (err) {
+					console.error(err);
+				}
+				break;
+			}
 
 			default:
 				break;
