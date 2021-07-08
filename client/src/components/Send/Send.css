@@ -1,0 +1,38 @@
+.heading {
+  font-weight: bold;
+  margin-top: 40px;
+}
+
+.para {
+  color: aliceblue;
+  margin-top: 20px;
+}
+
+.formClass {
+  margin-top: 60px;
+}
+.submitBtn {
+  padding: 3px 10px;
+  background: whitesmoke;
+  border: none;
+  outline: none;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.fileBtn {
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  outline: none;
+}
+.receiveFileBtn {
+  border: none;
+  outline: none;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}

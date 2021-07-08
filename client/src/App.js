@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import Login from "./components/Login/Login";
+import Register from "./components/Register/Register";
+import Send from "./components/Send/Send";
+import Receive from "./components/Receive/Receive";
 
 function App() {
+  const [toggle, settoggle] = useState(0);
+  const handleClick = () => {
+    if (!toggle) settoggle(1);
+    else settoggle(0);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <h1>Login/Register</h1>
+      <label class="switch">
+        <input type="checkbox" onChange={handleClick}></input>
+        <span class="slider round"></span>
+      </label>
+      <div>{toggle ? <Login /> : <Register />}</div>
     </div>
   );
 }

@@ -1,0 +1,24 @@
+.heading {
+  margin-top: 30px;
+}
+.table {
+  margin-top: 30px;
+}
+
+.tableHead {
+  font-weight: bold;
+  color: white;
+}
+
+th,
+tr {
+  color: white !important;
+}
+.sendFileBtn {
+  border: none;
+  outline: none;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
