@@ -4,6 +4,8 @@ const { user } = require('../../models/userModel');
 const NodeRSA = require('node-rsa');
 const { DESdecryption } = require('../encryptors/DES');
 const fs = require('fs');
+const fse = require('fs-extra');
+
 const { AESdecryption } = require('../encryptors/AES');
 const { RC4decryption } = require('../encryptors/RC4');
 const { TripleDESdecryption } = require('../encryptors/3DES');
@@ -13,7 +15,7 @@ const { RabbitDecryption } = require('../encryptors/RABBIT');
 async function decryptAndDownload(req, res) {
 	try {
 		const fileID = req.body.fileID;
-		const email = req.session.email;
+		const email = req.params.email;
 
 		result = await user.aggregate([
 			{ $match: { 'receivedFiles.fileID': fileID } },
@@ -55,8 +57,16 @@ async function decryptAndDownload(req, res) {
 		);
 		const dataBuffer = result[0].receivedFiles[0].buffer;
 		const type = result[0].receivedFiles[0].type;
-
+		console.log(type);
 		//! Decryption depending on type
+		try {
+			const path = email + '_download.txt';
+			console.log(path);
+			fse.ensureFileSync(path);
+			console.log('file created');
+		} catch (err) {
+			console.error(err);
+		}
 		switch (type) {
 			case 'AES': {
 				console.time('AES_DECRYPT');
@@ -68,7 +78,7 @@ async function decryptAndDownload(req, res) {
 
 				try {
 					await fs.writeFile(
-						req.session.email + '_download.txt',
+						email + '_download.txt',
 						decryptedBuffer,
 						function (err) {
 							if (err) return console.log(err);
@@ -92,7 +102,7 @@ async function decryptAndDownload(req, res) {
 
 				try {
 					await fs.writeFile(
-						req.session.email + '_download.txt',
+						email + '_download.txt',
 						decryptedBuffer,
 						function (err) {
 							if (err) return console.log(err);
@@ -115,7 +125,7 @@ async function decryptAndDownload(req, res) {
 
 				try {
 					await fs.writeFile(
-						req.session.email + '_download.txt',
+						email + '_download.txt',
 						decryptedBuffer,
 						function (err) {
 							if (err) return console.log(err);
@@ -134,11 +144,12 @@ async function decryptAndDownload(req, res) {
 					decryptedEKey,
 					dataBuffer
 				);
+				// console.log(decryptedBuffer);
 				console.timeEnd('3DES_DECRYPT');
 
 				try {
 					await fs.writeFile(
-						req.session.email + '_download.txt',
+						email + '_download.txt',
 						decryptedBuffer,
 						function (err) {
 							if (err) return console.log(err);
@@ -161,7 +172,7 @@ async function decryptAndDownload(req, res) {
 
 				try {
 					await fs.writeFile(
-						req.session.email + '_download.txt',
+						email + '_download.txt',
 						decryptedBuffer,
 						function (err) {
 							if (err) return console.log(err);
@@ -184,7 +195,7 @@ async function decryptAndDownload(req, res) {
 
 				try {
 					await fs.writeFile(
-						req.session.email + '_download.txt',
+						email + '_download.txt',
 						decryptedBuffer,
 						function (err) {
 							if (err) return console.log(err);
@@ -201,7 +212,8 @@ async function decryptAndDownload(req, res) {
 				break;
 		}
 
-		return sendResponse(res, 'Download file created');
+		return res.download(email + '_download.txt');
+		// return sendResponse(res, 'Download file created');
 	} catch (e) {
 		console.log(e);
 		return sendResponse(res, e);

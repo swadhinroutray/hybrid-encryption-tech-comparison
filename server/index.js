@@ -9,6 +9,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const redisStore = require('./config/redis')(session);
+const cors = require('cors');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -24,7 +25,7 @@ const sec_sess = session({
 });
 app.use(sec_sess);
 app.use(cookieParser('session'));
-
+app.use(cors());
 app.use(morgan('tiny')); //! Dev Logger , Remove On Production
 
 app.use('/api', routes);

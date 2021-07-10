@@ -13,10 +13,10 @@ const NodeRSA = require('node-rsa');
 //! TODO: Add encrytor parameter
 async function readFileAndPassToEncryptor(req, res) {
 	try {
-		const file = req.files[0];
+		const file = req.file;
 		const toEmail = req.body.email;
-		const fromEmail = req.session.email;
-		// console.log(file);
+		const fromEmail = req.body.toEmail;
+		console.log(file);
 		result = await user.findOne(
 			{
 				email: toEmail,

@@ -3,10 +3,13 @@ import React, { useState, useEffect } from 'react';
 import './Receive.css';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { get } from '../../utils/api';
+import { get, post } from '../../utils/api';
+const download = require('downloadjs');
+
 const Receive = inject('loginStore')(
 	observer(({ loginStore }) => {
 		const [files, setFiles] = useState([]);
+		const [timer, setTimer] = useState(0);
 		// const [primaryCheck, setPrimaryCheck] = useState(false);
 		console.log(loginStore.profile.email);
 
@@ -22,8 +25,32 @@ const Receive = inject('loginStore')(
 			// setLoading(false);
 		}, []);
 
-		const handleClick = (curr) => {
+		const handleClick = async (curr) => {
 			console.log(curr);
+
+			const postData = {
+				fileID: curr.fileID,
+			};
+			// console.time('CLIENT_FETCH');
+			var t0 = performance.now();
+
+			fetch('/api/getfile/' + loginStore.profile.email, {
+				method: 'POST',
+				body: JSON.stringify(postData),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+				.then(function (resp) {
+					console.log(resp);
+					return resp.blob();
+				})
+				.then(function (blob) {
+					console.log(blob);
+				});
+			var t1 = performance.now();
+			setTimer(t1 - t0);
+			console.timeEnd('CLIENT_FETCH');
 		};
 
 		return (
@@ -75,6 +102,8 @@ const Receive = inject('loginStore')(
 				>
 					Send Files
 				</Link>
+
+				<h3> Total Time Elapsed: {timer} </h3>
 			</div>
 		);
 	})

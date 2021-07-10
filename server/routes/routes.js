@@ -27,11 +27,10 @@ router.get('/init', isLoggedin, auth.init);
 
 router.post(
 	'/sendfile/:encryptor',
-	isLoggedin,
-	upload.array('files'),
+	upload.single('file'),
 	fh.readFileAndPassToEncryptor
 );
-router.post('/getfile', isLoggedin, fh.decryptAndDownload);
+router.post('/getfile/:email', fh.decryptAndDownload);
 router.get('/hello', helloHandler.hello);
 router.get('/recieved/:email', getReceivedFiles);
 
