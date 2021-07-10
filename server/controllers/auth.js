@@ -37,6 +37,7 @@ async function register(req, res) {
 async function login(req, res) {
 	try {
 		// console.log(req.session)
+		console.log(req.body);
 		if (req.session.logged_in == undefined || !req.session.logged_in) {
 			result = await user.findOne({ email: req.body.email.trim() });
 			// console.log(result)
@@ -55,8 +56,13 @@ async function login(req, res) {
 					req.session.email = req.body.email;
 					req.session.name = result.name;
 					req.session.logged_in = true;
+					const obj = {
+						name: result.name,
+						email: result.email,
+						contact: result.contact,
+					};
 					req.session.save(() => {
-						return sendResponse(res, result);
+						return sendResponse(res, obj);
 					});
 				}
 			}
@@ -78,8 +84,24 @@ async function logout(req, res) {
 	return sendResponse(res, 'Logged Out Successfully');
 }
 
+async function init(req, res) {
+	try {
+		result = await user.findOne({
+			email: req.session.email,
+		});
+		if (!result) {
+			return response.sendError(res, 'No Initialisation');
+		}
+		return response.sendResponse(res, result);
+	} catch (e) {
+		console.log(e);
+		return response.sendError(res, e);
+	}
+}
+
 module.exports = {
 	register,
 	login,
 	logout,
+	init,
 };

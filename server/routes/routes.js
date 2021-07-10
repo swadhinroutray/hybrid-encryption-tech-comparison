@@ -1,10 +1,10 @@
 const helloHandler = require('../controllers/helloHandler');
-const AESHandler = require('../controllers/aesGenerator');
 const router = require('express').Router();
 const auth = require('../controllers/auth');
 const fh = require('../controllers/fileHandlers/index');
 
 const multer = require('multer');
+const { getReceivedFiles } = require('../controllers/retreival');
 var storage = multer.memoryStorage();
 var upload = multer({ storage: storage });
 
@@ -22,7 +22,8 @@ function isLoggedin(req, res, next) {
 //* Auth Routes
 router.post('/register', auth.register);
 router.post('/login', auth.login);
-router.post('/logout', isLoggedin, auth.logout);
+router.get('/logout', isLoggedin, auth.logout);
+router.get('/init', isLoggedin, auth.init);
 
 router.post(
 	'/sendfile/:encryptor',
@@ -32,7 +33,6 @@ router.post(
 );
 router.post('/getfile', isLoggedin, fh.decryptAndDownload);
 router.get('/hello', helloHandler.hello);
-router.post('/gen', AESHandler.GenKeys);
-router.post('/get', AESHandler.GetKeys);
+router.get('/recieved/:email', getReceivedFiles);
 
 module.exports = router;

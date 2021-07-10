@@ -1,26 +1,18 @@
-import React, { useState } from "react";
-import "./App.css";
-import Login from "./components/Login/Login";
-import Register from "./components/Register/Register";
-import Send from "./components/Send/Send";
-import Receive from "./components/Receive/Receive";
+import React, { useState } from 'react';
+import './App.css';
+import { BrowserRouter } from 'react-router-dom';
+import AppRouter from './routes/AppRouter';
+import { Provider } from 'mobx-react';
+import loginStore from './models/loginModel';
 
 function App() {
-  const [toggle, settoggle] = useState(0);
-  const handleClick = () => {
-    if (!toggle) settoggle(1);
-    else settoggle(0);
-  };
-  return (
-    <div className="app">
-      <h1>Login/Register</h1>
-      <label class="switch">
-        <input type="checkbox" onChange={handleClick}></input>
-        <span class="slider round"></span>
-      </label>
-      <div>{toggle ? <Login /> : <Register />}</div>
-    </div>
-  );
+	return (
+		<BrowserRouter>
+			<Provider loginStore={loginStore}>
+				<AppRouter />
+			</Provider>
+		</BrowserRouter>
+	);
 }
 
 export default App;
